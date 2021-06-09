@@ -22,7 +22,11 @@
         <include refid="Base_Column"></include>
         from user where del_flag=#{DEL_FLAG_NORMAL}
     </select>
-
+    <select id="get" resultType="com.example.entity.User">
+        select
+        <include refid="All_Column"></include>
+        from user where id=#{i}
+    </select>
     <select id="getUserById" resultType="com.example.entity.User">
         select
         <include refid="All_Column"></include>

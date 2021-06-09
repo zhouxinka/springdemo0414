@@ -10,6 +10,9 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
     <!--spring配置文件-->
 
+    <!-- 开启注解 -->
+    <context:annotation-config/>
+
     <!-- 加载配置属性文件(base.properties)，然后利用${key}来获取配置文件里面的属性值 -->
     <context:property-placeholder ignore-unresolvable="true" location="classpath:base.properties" />
 
@@ -18,14 +21,14 @@
        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
-    <!-- 事务：第一步，配置事务管理器（声明式事务） -->
+    <!--事务注解方式： 第一步，开启事务注解  -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <!-- 事务：第二步，配置事务管理器（声明式事务） -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <!--注入属性dataSource,表明事务管理器要对哪个数据源进行管理  -->
         <property name="dataSource" ref="dynamicDataSource"></property>
     </bean>
-
-    <!--事务注解方式： 第二步，开启事务注解  -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
 
     <!--注册sqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
