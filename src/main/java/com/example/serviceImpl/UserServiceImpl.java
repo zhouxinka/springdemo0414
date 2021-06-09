@@ -2,6 +2,7 @@ package com.example.serviceImpl;
 
 import com.example.dao.UserDao;
 import com.example.entity.User;
+import com.example.service.CrudService;
 import com.example.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * @create time 2021-04-14-15:10
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends CrudService<UserDao,User> implements UserService {
     @Resource
     private UserDao userDao;
 
@@ -41,7 +42,8 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public User getUserById(Integer id) {
-        return userDao.getUserById(id);
+        return super.get(id+"");//调用父类CrudService的get方法
+
     }
     @Override
     public User getUserByName(String name) {

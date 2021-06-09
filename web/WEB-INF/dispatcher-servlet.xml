@@ -5,7 +5,7 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <!--此文件负责整个mvc中的配置-->
-    <!-- 加载配置属性文件,然后在controller里面利用${key}来获取配置文件里面的属性值 -->
+    <!-- 加载配置属性文件,然后在BaseController里面利用${key}来获取配置文件里面的属性值 -->
     <context:property-placeholder ignore-unresolvable="true" location="classpath:base.properties" />
 
     <!--启用spring的一些annotation -->

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @MybatisDao
-public interface UserDao {
+public interface UserDao extends CrudDao<User>{
     void addUser(User user);
 
     List<User> findAllUser(User user);

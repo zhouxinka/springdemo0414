@@ -24,5 +24,11 @@ public class Test {
        ApplicationContext ap=new ClassPathXmlApplicationContext("spring-config.xml");
         User user = (User)ap.getBean("user");
         System.out.println(user.toString());
+        Class<User> userClass = User.class;
+        Class<? extends Class> aClass = userClass.getClass();
+        Class<? extends Class> aClass1 = aClass.getClass();
+        System.out.println(aClass.equals(aClass1));
+
+
     }
 }

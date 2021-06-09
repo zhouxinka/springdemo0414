@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.entity.Teacher;
-import com.example.serviceImpl.TeacherServiceImpl;
+import com.example.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ import java.util.Map;
 //@Scope("prototype")
 public class TeacherController extends BaseController {
     @Autowired
-    private TeacherServiceImpl teacherServiceImpl;
+    private TeacherService teacherServiceImpl;
 
     @RequestMapping(value="/teacherInfo")
     public String teacherInfo(Model model){

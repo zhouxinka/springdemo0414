@@ -4,7 +4,7 @@ package com.example.entity;
  * @author zhoupeng
  * @create time 2021-04-14-10:07
  */
-public class User extends BaseEntity{
+public class User extends BaseEntity<User>{
     private Integer id;
     private String name;
     private int age;
@@ -12,6 +12,7 @@ public class User extends BaseEntity{
 
     public User() {
         super();
+        System.out.println("User类的无参构造方法");
     }
 
     public Integer getId() {

@@ -2,7 +2,7 @@ package com.example.controller;
 
 import com.example.dataSource.DynamicDataSource;
 import com.example.entity.User;
-import com.example.serviceImpl.UserServiceImpl;
+import com.example.service.UserService;
 import com.example.utils.Global;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,10 @@ import java.util.List;
 @Controller
 @RequestMapping("${adminPath}")
 public class UserController extends BaseController {
+    //这里使用接口指向子类实现（不建议使用UserServiceImpl userServiceImpl）
+    //从而解决事务中的动态代理出错的问题
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userServiceImpl;
 
     @ModelAttribute
     public User get(@RequestParam(required = false) String id){

@@ -14,7 +14,7 @@ import java.util.Map;
  * @create time 2021-04-14-15:10
  */
 @Service
-public class TeacherServiceImpl implements TeacherService {
+public class TeacherServiceImpl extends Exception implements TeacherService {
     @Resource
     private TeacherDao teacherDao;
 
