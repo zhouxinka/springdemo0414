@@ -11,7 +11,7 @@ import java.util.Date;
  * @author zhoupeng
  * @create time 2021-04-16-9:47
  */
-public class BaseEntity<T> {
+public abstract class DataEntity<T> {
     /**
      * 删除标记（0：正常；1：删除；2：审核；）
      */
@@ -26,7 +26,7 @@ public class BaseEntity<T> {
     protected Date updateDate;	// 更新日期
     protected String delFlag; 	// 删除标记（0：正常；1：删除；2：审核）
 
-    public BaseEntity() {
+    public DataEntity() {
         this.delFlag = DEL_FLAG_NORMAL;
     }
 

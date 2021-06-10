@@ -33,12 +33,11 @@ public class UserServiceImpl extends CrudService<UserDao,User> implements UserSe
 
     @Override
     public void deleteUser(User user) {
-        System.out.println("UserServiceImpl.deleteUser()...");
-        userDao.deleteById(user);
+        delete(user);//调用的是父类CrudService的delete方法
     }
     @Override
     public List<User> findAllUser(User user) {
-        return userDao.findAllUser(user);
+        return findList(user);
     }
     @Override
     public User getUserById(Integer id) {

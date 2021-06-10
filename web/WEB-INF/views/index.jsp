@@ -21,5 +21,6 @@
 <p align="center">首页</p>
 <a href="${ctx}/userInfo" style="text-decoration:none">查看用户信息</a>
 <a href="${ctx}/teacherInfo" style="text-decoration:none">查看教师信息</a>
+<a href="${ctx}/testJSP" style="text-decoration:none">测试按钮</a>
 </body>
 </html>

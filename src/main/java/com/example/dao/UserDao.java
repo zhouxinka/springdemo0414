@@ -12,12 +12,9 @@ public interface UserDao extends CrudDao<User>{
 
     List<User> findAllUser(User user);
 
-    void deleteById(User user);
-
     User insertUser(User user);
 
     User getUserByName(String name);
-
 
 
     /**

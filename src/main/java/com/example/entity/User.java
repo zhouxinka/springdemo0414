@@ -4,7 +4,7 @@ package com.example.entity;
  * @author zhoupeng
  * @create time 2021-04-14-10:07
  */
-public class User extends BaseEntity<User>{
+public class User extends DataEntity<User>{
     private Integer id;
     private String name;
     private int age;

@@ -123,6 +123,7 @@ public class UserController extends BaseController {
     public String delete(User user, RedirectAttributes redirectAttributes){
         System.out.println("UserController的delete方法里面的user:"+user.toString());
         userServiceImpl.deleteUser(user);
+        //删除成功后给页面添加一个flash信息
         addMessage(redirectAttributes,"删除成功！","页面刷新了！");
         return "redirect:"+ Global.getAdminPath()+"/userInfo";
     }

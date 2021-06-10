@@ -11,13 +11,13 @@
         id,name,age,gender
     </sql>
 
-    <delete id="deleteById">
+    <delete id="delete">
         UPDATE user SET
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
     </delete>
 
-    <select id="findAllUser" resultType="com.example.entity.User">
+    <select id="findList" resultType="com.example.entity.User">
         select
         <include refid="Base_Column"></include>
         from user where del_flag=#{DEL_FLAG_NORMAL}

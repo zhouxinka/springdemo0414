@@ -2,12 +2,16 @@ package com.example.controller;
 
 import com.example.entity.ConsumeData;
 import com.example.entity.DBProperties;
+import com.example.entity.User;
 import com.example.utils.DataConsumeUtil;
 import com.example.utils.DataSourceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 测试用的Controller
@@ -28,6 +32,17 @@ public class TestController extends BaseController{
     public void getDBProperties() {
         System.out.println("TestController的getDBProperties方法里面的dbProperties.getType():"+dbProperties.getType());
     }
+
+    @RequestMapping(value="/testJSP")
+    public String test(HttpServletRequest request) {
+        return "test";
+    }
+
+    @RequestMapping(value="/testData")
+    public void testData(@RequestBody  User user) {
+        System.out.println("TestController的testData方法里面的user:"+user.toString());
+    }
+
     @RequestMapping(value="/testJdbcTemplate")
     public void testJdbcTemplate(){
         //这是spring注入的jdbcTemplate,在applicationContext.xml里面有配置

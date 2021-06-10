@@ -1,7 +1,7 @@
 package com.example.service;
 
 import com.example.dao.CrudDao;
-import com.example.entity.BaseEntity;
+import com.example.entity.DataEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @author zhoupeng
  * @create time 2021-06-09-9:19
  */
-public abstract class CrudService<D extends CrudDao<T>,T extends BaseEntity<T>> extends BaseService{
+public abstract class CrudService<D extends CrudDao<T>,T extends DataEntity<T>> extends BaseService{
     /**
      * 持久层对象
      */
