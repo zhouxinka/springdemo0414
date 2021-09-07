@@ -41,7 +41,7 @@
 </script>
 <body>
 <p align="center">User Information</p>
-<sys:message content="${message}"/>
+<sys:messages content="${message}"/>
 <table>
     <thead>
         <tr>

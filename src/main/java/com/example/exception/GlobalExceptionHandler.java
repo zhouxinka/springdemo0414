@@ -1,8 +1,9 @@
 package com.example.exception;
 
+import com.example.entity.Result;
 import org.apache.log4j.Logger;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author zhoupeng
  * @create time 2021-04-15-16:36
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
     private Logger log = Logger.getLogger(GlobalExceptionHandler.class);
     //当抛出名字异常时触发这个方法,比如记录日志，转发到异常页面，通知邮件或者短信
@@ -33,5 +34,10 @@ public class GlobalExceptionHandler {
         modelAndView.setViewName("unknownException");
         return modelAndView;
 
+    }
+
+    @ExceptionHandler(MyException.class)
+    public <T> Result<T> doMyException(MyException e) {
+        return Result.error(e.getCode(), e.getMessage());
     }
 }

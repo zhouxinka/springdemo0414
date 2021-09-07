@@ -17,6 +17,7 @@
 </head>
 <body>
 <body>
+<sys:messages content="${message}"/>
     <form action="${ctx}/doLogin" method="post">
         username:<br>
         <input type="text" name="username"><br>

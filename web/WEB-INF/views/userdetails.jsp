@@ -22,7 +22,7 @@
 </script>
 <body>
 <p align="center">User Details</p>
-<sys:message content="${message}"/>
+<sys:messages content="${message}"/>
 <table>
     <thead>
         <tr>

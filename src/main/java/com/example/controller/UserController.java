@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dataSource.DynamicDataSource;
 import com.example.entity.User;
+import com.example.exception.MyException;
 import com.example.service.UserService;
 import com.example.utils.Global;
 import org.apache.commons.lang3.StringUtils;
@@ -61,12 +62,13 @@ public class UserController extends BaseController {
      * 将前端参数”password“与形参”psd“进行绑定
      */
     @RequestMapping(value="/doLogin")
-    public String doLogin(String username,@RequestParam(value="password") String psd, HttpServletRequest request) {
+    public String doLogin(String username,@RequestParam(value="password") String psd, HttpServletRequest request,RedirectAttributes redirectAttributes) {
         System.out.println("UserController里面的doLogin方法的username:"+username);
         System.out.println("UserController里面的doLogin方法的psd:"+psd);
         User user = userServiceImpl.getUserByName(username);
         if(user==null){
-            return "login";
+            addMessage(redirectAttributes,"登陆失败，用户名或密码错误！！！");
+            return "redirect:"+Global.getAdminPath()+"/login";
         }
         //将当前登录的用户存入session
         HttpSession session = request.getSession();session.setAttribute("CURRENT_USER",user);
@@ -118,7 +120,11 @@ public class UserController extends BaseController {
         model.addAttribute("userdetails",user);
         return "userdetails";
     }
-
+    @RequestMapping(value="/testMyException")
+    public void testMyException(){
+        System.out.println("testMyException...");
+        MyException.throwMyException("404","资源不存在！！！");
+    }
     @RequestMapping(value="/delete")
     public String delete(User user, RedirectAttributes redirectAttributes){
         System.out.println("UserController的delete方法里面的user:"+user.toString());
