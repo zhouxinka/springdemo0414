@@ -67,6 +67,7 @@ public class UserController extends BaseController {
         System.out.println("UserController里面的doLogin方法的psd:"+psd);
         User user = userServiceImpl.getUserByName(username);
         if(user==null){
+            //增加flash信息提示用户名或者密码错误
             addMessage(redirectAttributes,"登陆失败，用户名或密码错误！！！");
             return "redirect:"+Global.getAdminPath()+"/login";
         }
