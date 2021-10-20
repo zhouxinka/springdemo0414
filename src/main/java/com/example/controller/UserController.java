@@ -17,7 +17,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -67,7 +71,7 @@ public class UserController extends BaseController {
         System.out.println("UserController里面的doLogin方法的psd:"+psd);
         User user = userServiceImpl.getUserByName(username);
         if(user==null){
-            //增加flash信息提示用户名或者密码错误，login页面也要增加sys:Lmessages标签
+            //增加flash信息提示用户名或者密码错误，login页面也要增加sys:messages标签
             addMessage(redirectAttributes,"登陆失败，用户名或密码错误！！！");
             return "redirect:"+Global.getAdminPath()+"/login";
         }
@@ -96,7 +100,10 @@ public class UserController extends BaseController {
         List<User> allUser = userServiceImpl.findAllUser(user);
         return allUser;
     }
-
+    /**
+     * 通过ID获取用户
+     * @return
+     */
     @RequestMapping(value="/getUserById")
     @ResponseBody
     public User getUserById(){
@@ -104,7 +111,12 @@ public class UserController extends BaseController {
         User user = userServiceImpl.getUserById(3);
         return user;
     }
-
+    /**
+     * 增加用户
+     * @param user
+     * @param request
+     * @return
+     */
     @RequestMapping(value="/addUser")
     public String addUser(User user, HttpServletRequest request){
         log.error("addUser...");
@@ -115,12 +127,22 @@ public class UserController extends BaseController {
         //重定向到a/userInfo请求
         return "redirect:/a/userInfo";
     }
-
+    /**
+     * 获取用户详情，跳转到用户详情页面
+     * @param user
+     * @param model
+     * @return
+     */
     @RequestMapping(value="/details")
     public String userDetails(User user, Model model){
         model.addAttribute("userdetails",user);
         return "userdetails";
     }
+    /**
+     * 测试使用@RestControllerAdvice注解的全局异常处理类来处理异常
+     *当抛出MyException异常的时候
+     * 就会触发GlobalExceptionHandler里面的doMyException方法
+     */
     @RequestMapping(value="/testMyException")
     public void testMyException(){
         System.out.println("testMyException...");
@@ -135,6 +157,88 @@ public class UserController extends BaseController {
         return "redirect:"+ Global.getAdminPath()+"/userInfo";
     }
 
+    /**
+     * 接受httpClient发送的get请求
+     */
+    @RequestMapping(value = "/testHttpClientWithGet",produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String testHttpClientWithGet(HttpServletRequest request){
+        System.out.println("接受到get请求的参数是："+request.getParameter("key"));
+        return "{\"message\":\"成功接受到get请求！！！\"}";
+    }
+
+    /**
+     * 接受httpClient发送的post请求
+     */
+    @RequestMapping(value = "/testHttpClientWithPost",produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String testHttpClientWithPost(HttpServletRequest request) {
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            inputStreamReader = new InputStreamReader(request.getInputStream(),"UTF-8");
+            bufferedReader = new BufferedReader(inputStreamReader);
+            String line = null;
+            StringBuilder sb = new StringBuilder();
+            if((line = bufferedReader.readLine())!=null){
+                sb.append(line);
+            }
+            if(sb.length()>0){
+                System.out.println("接受到Post请求的参数是："+sb.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                inputStreamReader.close();
+                bufferedReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return "{\"message\":\"成功接受到post请求！！！\"}";
+    }
+    /**
+     * 接受httpClient发送的post请求
+     */
+    @RequestMapping(value = "/testHttpClientWithPost2",produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String testHttpClientWithPost2(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println(request.getContentType());
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        String result = "";
+        try {
+            inputStreamReader = new InputStreamReader(request.getInputStream(),"UTF-8");
+            bufferedReader = new BufferedReader(inputStreamReader);
+            String line = null;
+            StringBuilder sb = new StringBuilder();
+            if((line = bufferedReader.readLine())!=null){
+                sb.append(line);
+            }
+            if(sb.length()>0){
+                System.out.println("接受到Post2请求的参数是："+sb.toString());
+                result = "{\"message\":\"成功接受到post2请求！！！\"}";
+            }else{
+                result = "{\"message\":\"没有接受到post2请求！！！\"}";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                inputStreamReader.close();
+                bufferedReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 使用@PostConstruct初始化方法
+     * 里面切换数据库
+     */
     @PostConstruct
     public void initMethod(){
         DynamicDataSource.setDatasourceOne();//切换数据库

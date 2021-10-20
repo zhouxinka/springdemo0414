@@ -25,7 +25,6 @@ public class DataConsumeUtil {
         pool.submit(new Runnable() {
             public void run() {
                 while (isRunning) {
-                    System.out.println(Thread.currentThread().getName());
                     try {
                         //从队列中取出元素，如果没有取到那就阻塞，直到取到为止
                         ConsumeData pm = consumeQueue.take();

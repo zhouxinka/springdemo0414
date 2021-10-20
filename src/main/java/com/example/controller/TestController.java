@@ -43,6 +43,11 @@ public class TestController extends BaseController{
         System.out.println("TestController的testData方法里面的user:"+user.toString());
     }
 
+    /**
+     * 测试使用JdbcTemplate
+     * 一个是自己new的
+     * 一个是spring注入的
+     */
     @RequestMapping(value="/testJdbcTemplate")
     public void testJdbcTemplate(){
         //这是spring注入的jdbcTemplate,在applicationContext.xml里面有配置
@@ -53,6 +58,10 @@ public class TestController extends BaseController{
         String n = j.queryForObject("select name from user where id=1 ",String.class);
         System.out.println("TestController的testJdbcTemplate方法里面的n:"+n);
     }
+
+    /**
+     * 测试推送数据
+     */
     @RequestMapping("/testDataConsumeUtil")
     public void testDataConsumeUtil(){
         try{
@@ -65,6 +74,7 @@ public class TestController extends BaseController{
             consumeData.setAlias("1");
             consumeData.setNotes(this.getClass().getSimpleName());
             //将consumeData对象添加到consumeQueue阻塞队列
+            //在DataConsumeUtil.init()里面取数据
             DataConsumeUtil.consumeQueue.put(consumeData);
         }catch(Exception e ){
             e.printStackTrace();
