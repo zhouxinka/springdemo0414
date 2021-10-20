@@ -16,7 +16,7 @@
         from teacher
     </select>
 
-    <select id="getTeacherById" resultType="hashmap" parameterType="int">
+    <select id="getTeacherById" resultType="com.example.entity.Teacher" parameterType="int">
         select
         <include refid="Base_Column_List"></include>
         from teacher where id=#{id}

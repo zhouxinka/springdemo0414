@@ -43,6 +43,9 @@
             <!--以下配置的是不拦截的请求,意思就是请求不会被拦截器拦截，不会执行拦截器里面的任何方法包括preHandle方法-->
             <mvc:exclude-mapping path="${adminPath}/login"/>
             <mvc:exclude-mapping path="${adminPath}/doLogin"/>
+            <mvc:exclude-mapping path="${adminPath}/testHttpClientWithGet"/>
+            <mvc:exclude-mapping path="${adminPath}/testHttpClientWithPost"/>
+            <mvc:exclude-mapping path="${adminPath}/testHttpClientWithPost2"/>
             <bean class="com.example.interceptors.MyFirstInterceptors"></bean>
         </mvc:interceptor>
 
