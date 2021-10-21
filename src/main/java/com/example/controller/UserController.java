@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -145,7 +146,6 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value="/testMyException")
     public void testMyException(){
-        System.out.println("testMyException...");
         MyException.throwMyException("404","资源不存在！！！");
     }
     @RequestMapping(value="/delete")
@@ -204,35 +204,15 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/testHttpClientWithPost2",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String testHttpClientWithPost2(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(request.getContentType());
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
-        String result = "";
-        try {
-            inputStreamReader = new InputStreamReader(request.getInputStream(),"UTF-8");
-            bufferedReader = new BufferedReader(inputStreamReader);
-            String line = null;
-            StringBuilder sb = new StringBuilder();
-            if((line = bufferedReader.readLine())!=null){
-                sb.append(line);
-            }
-            if(sb.length()>0){
-                System.out.println("接受到Post2请求的参数是："+sb.toString());
-                result = "{\"message\":\"成功接受到post2请求！！！\"}";
-            }else{
-                result = "{\"message\":\"没有接受到post2请求！！！\"}";
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                inputStreamReader.close();
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        // 因为表单数据是键值对形式发送来的，
+        // 所以这里用request.getParameterNames()获取所有的键值对
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while(parameterNames.hasMoreElements()){
+            String key = parameterNames.nextElement();
+            String value = request.getParameter(key);
+            System.out.println("key="+key+"    value="+value);
         }
-        return result;
+        return "{\"message\":\"成功接受到post2请求！！！\"}";
     }
 
     /**
@@ -241,10 +221,11 @@ public class UserController extends BaseController {
      */
     @PostConstruct
     public void initMethod(){
-        DynamicDataSource.setDatasourceOne();//切换数据库
+        //切换到第一个数据库
+        DynamicDataSource.setDatasourceOne();
         //获取当前所在的数据库
         String currentDatasource= DynamicDataSource.getCurrentLookupKey();
-        System.out.println("UserController中的初始化方法执行了。。。");
+        System.out.println("当前所在的数据库是："+currentDatasource);
     }
 }
 

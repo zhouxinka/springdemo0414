@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * @author zhoupeng
@@ -28,12 +29,6 @@ import java.util.Map;
 public class Test {
     @Autowired
     private TeacherServiceImpl teacherServiceImpl;
-    public static void main(String[] args) {
-        ApplicationContext ap=new ClassPathXmlApplicationContext("spring-config.xml");
-        User user = (User)ap.getBean("user");
-        System.out.println(user.toString());
-
-    }
     @org.junit.Test
     public void test(){
        ApplicationContext ap=new ClassPathXmlApplicationContext("spring-config.xml");
@@ -130,5 +125,21 @@ public class Test {
         params.put("password","123456");
         String result = HttpClientUtil.doPost2(url, params);
         System.out.println("测试使用HttpClient发送Post2请求的返回值是："+result);
+    }
+    public static void main(String[] args){
+        int[] nums = {3,23,21,19};
+        TreeSet<Integer> treeSet = new TreeSet<>();
+        for(int i:nums){
+            treeSet.add(i);
+            if(treeSet.size()>3){
+                treeSet.pollFirst();
+            }
+        }
+        System.out.println(treeSet.toString());
+        if(treeSet.size()<3){
+            System.out.println(treeSet.pollLast());
+        }else{
+            System.out.println(treeSet.pollFirst());
+        }
     }
 }

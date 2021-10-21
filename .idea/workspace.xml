@@ -14,8 +14,16 @@
   <component name="ChangeListManager">
     <list default="true" id="159b2204-26d7-4c66-b031-697b60a3ae40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/classes/mapper/TeacherDao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/classes/mapper/TeacherDao.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/dispatcher-servlet.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/dispatcher-servlet.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/classes/com/example/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/classes/com/example/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/classes/com/example/test/Test.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/classes/com/example/test/Test.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/classes/logs/lims/lims.log" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/springdemo0414_war_exploded/WEB-INF/classes/logs/lims/lims.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/test/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/test/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/utils/HttpClientUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/utils/HttpClientUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/lims/lims.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logs/lims/lims.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/test/Test.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/test/Test.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/logs/lims/lims.log" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/logs/lims/lims.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +179,9 @@
     <option name="height" value="1044" />
   </component>
   <component name="ProjectId" id="1zkRzEL5HuwVE0h7FC2FuszEAPq" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="false" id="Update" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -374,7 +384,7 @@
     <property name="project.structure.proportion" value="0.14789689" />
     <property name="project.structure.side.proportion" value="0.46100917" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RebelAgentSelection">
     <selection>jr</selection>
@@ -428,7 +438,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test.testHttpClient" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.test.Test" />
       <module name="springdemo0414" />
       <extension name="coverage">
         <pattern>
@@ -436,10 +447,6 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.example.test" />
-      <option name="MAIN_CLASS_NAME" value="com.example.test.Test" />
-      <option name="METHOD_NAME" value="testHttpClient" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -616,7 +623,7 @@
     </configuration>
     <list>
       <item itemvalue="Application.HttpClientUtil" />
-      <item itemvalue="JUnit.Test.testHttpClient" />
+      <item itemvalue="Application.Test" />
       <item itemvalue="JUnit.Test.testHttpClientWithPost" />
       <item itemvalue="JUnit.Test.testHttpClientWithPost2" />
       <item itemvalue="JUnit.Test.testHttpClientWithGet" />
@@ -624,11 +631,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.HttpClientUtil" />
         <item itemvalue="JUnit.Test.testHttpClientWithPost2" />
+        <item itemvalue="Application.Test" />
+        <item itemvalue="Application.HttpClientUtil" />
         <item itemvalue="JUnit.Test.testHttpClientWithGet" />
         <item itemvalue="JUnit.Test.testHttpClientWithPost" />
-        <item itemvalue="JUnit.Test.testHttpClient" />
       </list>
     </recent_temporary>
   </component>
@@ -695,7 +702,9 @@
       <workItem from="1634691739238" duration="404000" />
       <workItem from="1634692214902" duration="256000" />
       <workItem from="1634692516969" duration="11880000" />
-      <workItem from="1634706618956" duration="239000" />
+      <workItem from="1634706618956" duration="2367000" />
+      <workItem from="1634718617263" duration="1152000" />
+      <workItem from="1634776777785" duration="4726000" />
     </task>
     <task id="LOCAL-00001" summary="第一次提交">
       <created>1620366887210</created>
@@ -767,7 +776,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634703552710</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="项目重构20211010">
+      <created>1634706879456</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1634706879456</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TestHistory">

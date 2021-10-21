@@ -1,9 +1,8 @@
 package com.example.utils;
 
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -54,6 +53,7 @@ public class HttpClientUtil {
         return resultString;
     }
     //发送post请求，并且参数是json
+    // Content-Type: application/json
     public static String doPost(String url, String json){
         CloseableHttpClient httpClient = HttpClients.createDefault();
         String resultString = "";
@@ -80,7 +80,8 @@ public class HttpClientUtil {
         }
         return resultString;
     }
-    //发送post请求，并且参数是表单数据
+    // 发送post请求，并且参数是表单数据
+    // Content-Type: application/x-www-form-urlencoded;charset=utf-8
     public static String doPost2(String url, Map<String,String> params){
         CloseableHttpClient httpClient = HttpClients.createDefault();
         String resultString = "";
@@ -90,12 +91,11 @@ public class HttpClientUtil {
             if(params!=null){
                 List<NameValuePair> list = new ArrayList<>();
                 for(String key:params.keySet()){
+                    //表单数据是键值对，封装在BasicNameValuePair里面，加入集合
                     list.add(new BasicNameValuePair(key,params.get(key)));
                 }
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(System.out, JsonEncoding.UTF8);
-                jsonGenerator.writeObject(list);
-                StringEntity entity = new StringEntity(list.toString(),ContentType.APPLICATION_JSON);
+                //发送表单数据就要用这种Entity即：UrlEncodedFormEntity
+                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list,"utf-8");
                 httpPost.setEntity(entity);
             }
             response = httpClient.execute(httpPost);
