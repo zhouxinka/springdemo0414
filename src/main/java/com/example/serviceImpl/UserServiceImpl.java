@@ -5,6 +5,7 @@ import com.example.entity.User;
 import com.example.service.CrudService;
 import com.example.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class UserServiceImpl extends CrudService<UserDao,User> implements UserSe
     }
 
     @Override
+    @Transactional
     public void deleteUser(User user) {
         delete(user);//调用的是父类CrudService的delete方法
     }
@@ -47,5 +49,8 @@ public class UserServiceImpl extends CrudService<UserDao,User> implements UserSe
     @Override
     public User getUserByName(String name) {
         return userDao.getUserByName(name);
+    }
+    public void test(){
+        System.out.println("UserServiceImpl.test()");
     }
 }

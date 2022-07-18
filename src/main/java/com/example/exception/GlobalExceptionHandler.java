@@ -28,10 +28,10 @@ public class GlobalExceptionHandler {
     //处理未知异常
     @ExceptionHandler
     public ModelAndView handleUnknownException(Exception e){
-        log.error("未知异常：",e);
+        log.error("异常："+e.getMessage());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("msg","未知异常");
-        modelAndView.setViewName("unknownException");
+        modelAndView.addObject("msg",e.getMessage());
+        modelAndView.setViewName("Exception");
         return modelAndView;
 
     }

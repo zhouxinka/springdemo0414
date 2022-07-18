@@ -32,7 +32,7 @@ public abstract class BaseController {
     protected String urlSuffix;
     /**
      * 添加Flash消息
-     * @param message
+     * @param
      */
     protected void addMessage(RedirectAttributes redirectAttributes,String... messages){
         StringBuilder sb = new StringBuilder();

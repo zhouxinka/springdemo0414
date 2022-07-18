@@ -1,7 +1,9 @@
 package com.example.test;
 
+import com.example.entity.Sample;
 import com.example.entity.Teacher;
 import com.example.entity.User;
+import com.example.service.UserService;
 import com.example.serviceImpl.TeacherServiceImpl;
 import com.example.utils.DataSourceUtils;
 import com.example.utils.HttpClientUtil;
@@ -10,8 +12,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -20,7 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeSet;
 
 /**
  * @author zhoupeng
@@ -31,13 +31,12 @@ public class Test {
     private TeacherServiceImpl teacherServiceImpl;
     @org.junit.Test
     public void test(){
-       ApplicationContext ap=new ClassPathXmlApplicationContext("spring-config.xml");
-        User user = (User)ap.getBean("user");
-        System.out.println(user.toString());
-        Class<User> userClass = User.class;
-        Class<? extends Class> aClass = userClass.getClass();
-        Class<? extends Class> aClass1 = aClass.getClass();
-        System.out.println(aClass.equals(aClass1));
+        FileSystemXmlApplicationContext ac=new FileSystemXmlApplicationContext("/web/WEB-INF/applicationContext.xml");
+        Sample sample = (Sample) ac.getBean("sample1");
+        System.out.println(sample.toString());
+        UserService userServiceImpl =  ac.getBean(UserService.class);
+        User userById = userServiceImpl.getUserById(1);
+        System.out.println(userById);
     }
 
     /**
@@ -96,7 +95,7 @@ public class Test {
     @org.junit.Test
     public void testHttpClientWithGet(){
         String url = "http://localhost:8080/springdemo0414/a/testHttpClientWithGet";
-        Map<String,String> params = new HashMap<String,String>();
+        Map<String,String> params = new HashMap<>();
         params.put("name","刘能");
         params.put("age","54");
         String result = HttpClientUtil.doGet(url, params);
@@ -125,21 +124,5 @@ public class Test {
         params.put("password","123456");
         String result = HttpClientUtil.doPost2(url, params);
         System.out.println("测试使用HttpClient发送Post2请求的返回值是："+result);
-    }
-    public static void main(String[] args){
-        int[] nums = {3,23,21,19};
-        TreeSet<Integer> treeSet = new TreeSet<>();
-        for(int i:nums){
-            treeSet.add(i);
-            if(treeSet.size()>3){
-                treeSet.pollFirst();
-            }
-        }
-        System.out.println(treeSet.toString());
-        if(treeSet.size()<3){
-            System.out.println(treeSet.pollLast());
-        }else{
-            System.out.println(treeSet.pollFirst());
-        }
     }
 }

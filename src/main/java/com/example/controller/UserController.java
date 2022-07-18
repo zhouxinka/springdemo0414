@@ -5,23 +5,24 @@ import com.example.entity.User;
 import com.example.exception.MyException;
 import com.example.service.UserService;
 import com.example.utils.Global;
+import com.example.utils.HttpClientUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class UserController extends BaseController {
     private UserService userServiceImpl;
 
     @ModelAttribute
-    public User get(@RequestParam(required = false) String id){
+    public User get(@RequestParam(required = false) String id,HttpServletRequest request){
         System.out.println("UserController里面的ModelAttribute注解的方法里面的id:"+id);
         User user = null;
         if(StringUtils.isNotBlank(id)){
@@ -48,6 +49,21 @@ public class UserController extends BaseController {
             user = new User();
         }
         System.out.println("UserController里面的ModelAttribute注解的方法里面的user:"+user.toString());
+        //获取servletContext
+        ServletContext servletContext = request.getSession().getServletContext();
+        //将servletContext的所有属性打印出来
+        Enumeration<String> attributeNames = servletContext.getAttributeNames();
+        while(attributeNames.hasMoreElements()){
+            String s = attributeNames.nextElement();
+            System.out.println("servletContext的属性:"+s);
+        }
+        //获取子容器（spring mvc的容器）
+        WebApplicationContext webApplicationContext = (WebApplicationContext) servletContext.getAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.springMVC");
+        String applicationName = webApplicationContext.getApplicationName();
+        System.out.println("applicationName:"+applicationName);
+        //子容器中获取UserController的bean
+        UserController bean = webApplicationContext.getBean(UserController.class);
+        System.out.println(bean.toString());
         return user;
     }
 
@@ -55,7 +71,7 @@ public class UserController extends BaseController {
      * 前端输入/a/login，跳转到登录页面
      * @return
      */
-    @RequestMapping(value="/login")
+    @RequestMapping(value="/login",method = RequestMethod.GET)
     public String login() {
         return "login";
     }
@@ -77,7 +93,8 @@ public class UserController extends BaseController {
             return "redirect:"+Global.getAdminPath()+"/login";
         }
         //将当前登录的用户存入session
-        HttpSession session = request.getSession();session.setAttribute("CURRENT_USER",user);
+        HttpSession session = request.getSession();
+        session.setAttribute("CURRENT_USER",user);
         return "index";
     }
 
@@ -108,7 +125,6 @@ public class UserController extends BaseController {
     @RequestMapping(value="/getUserById")
     @ResponseBody
     public User getUserById(){
-        log.error("getUserById...");
         User user = userServiceImpl.getUserById(3);
         return user;
     }
@@ -120,7 +136,6 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value="/addUser")
     public String addUser(User user, HttpServletRequest request){
-        log.error("addUser...");
         user.setName("blincon");
         user.setAge(55);
         user.setGender("male");
@@ -141,7 +156,7 @@ public class UserController extends BaseController {
     }
     /**
      * 测试使用@RestControllerAdvice注解的全局异常处理类来处理异常
-     *当抛出MyException异常的时候
+     * 当抛出MyException异常的时候
      * 就会触发GlobalExceptionHandler里面的doMyException方法
      */
     @RequestMapping(value="/testMyException")
@@ -160,27 +175,30 @@ public class UserController extends BaseController {
     /**
      * 接受httpClient发送的get请求
      */
-    @RequestMapping(value = "/testHttpClientWithGet",produces = "application/json;charset=utf-8")
+    @GetMapping(value = "/testHttpClientWithGet", produces = "application/json;charset=utf-8")
     @ResponseBody
     public String testHttpClientWithGet(HttpServletRequest request){
-        System.out.println("接受到get请求的参数是："+request.getParameter("key"));
+        System.out.println("接受到get请求的参数是："+request.getParameter("name"));
+        System.out.println("接受到get请求的参数是："+request.getParameter("age"));
         return "{\"message\":\"成功接受到get请求！！！\"}";
     }
 
     /**
      * 接受httpClient发送的post请求
      */
-    @RequestMapping(value = "/testHttpClientWithPost",produces = "application/json;charset=utf-8")
+    @PostMapping(value = "/testHttpClientWithPost",produces = "application/json;charset=utf-8")
     @ResponseBody
-    public String testHttpClientWithPost(HttpServletRequest request) {
+    public String testHttpClientWithPost(HttpServletRequest request) throws IOException {
         InputStreamReader inputStreamReader = null;
+        OutputStream outputStream = null;
         BufferedReader bufferedReader = null;
+        StringBuilder sb = new StringBuilder();
         try {
             inputStreamReader = new InputStreamReader(request.getInputStream(),"UTF-8");
             bufferedReader = new BufferedReader(inputStreamReader);
-            String line = null;
-            StringBuilder sb = new StringBuilder();
-            if((line = bufferedReader.readLine())!=null){
+            String line;
+
+            while((line = bufferedReader.readLine())!=null){
                 sb.append(line);
             }
             if(sb.length()>0){
@@ -196,12 +214,12 @@ public class UserController extends BaseController {
                 e.printStackTrace();
             }
         }
-        return "{\"message\":\"成功接受到post请求！！！\"}";
+        return "{\"message\":\"成功接受到post请求，参数是：\""+sb.toString()+"}";
     }
     /**
      * 接受httpClient发送的post请求
      */
-    @RequestMapping(value = "/testHttpClientWithPost2",produces = "application/json;charset=utf-8")
+    @PostMapping(value = "/testHttpClientWithPost2",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String testHttpClientWithPost2(HttpServletRequest request, HttpServletResponse response) {
         // 因为表单数据是键值对形式发送来的，
@@ -226,6 +244,19 @@ public class UserController extends BaseController {
         //获取当前所在的数据库
         String currentDatasource= DynamicDataSource.getCurrentLookupKey();
         System.out.println("当前所在的数据库是："+currentDatasource);
+    }
+    @RequestMapping("/testPost")
+    public void testPost(){
+        //SimpleUrlHandlerMapping
+        String url = "http://localhost:8080/springdemo0414/a/testHttpClientWithPost";
+        String params = "{\"id\":\"2\",\"name\":\"麦卡唐尼\"}";
+        String result = HttpClientUtil.doPost(url, params);
+        System.out.println("测试使用HttpClient发送Post请求的返回值是："+result);
+    }
+
+    @Override
+    public String toString() {
+        return "UserController{}";
     }
 }
 

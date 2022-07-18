@@ -35,6 +35,7 @@
             data:JSON.stringify(dataObject),
             dataType:"JSON",
             success:function (data) {
+                console.log("data:"+data);
             }
         })
     })

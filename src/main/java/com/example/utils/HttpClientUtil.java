@@ -1,6 +1,5 @@
 package com.example.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,13 +22,17 @@ import java.util.Map;
 public class HttpClientUtil {
     //发送get请求
     public static String doGet(String url, Map<String,String> params){
+        System.out.println("HttpClientUtil.doGet的请求参数是："+params.toString());
         CloseableHttpClient httpClient = HttpClients.createDefault();
         String resultString = "";
         CloseableHttpResponse response = null;
         try {
             URIBuilder uriBuilder = new URIBuilder(url);
             if(params!=null){
-                uriBuilder.addParameter("key",new ObjectMapper().writeValueAsString(params));
+                for(String key:params.keySet()){
+
+                    uriBuilder.addParameter(key,params.get(key));
+                }
             }
             URI uri = uriBuilder.build();
             HttpGet httpGet = new HttpGet(uri);
@@ -52,7 +55,7 @@ public class HttpClientUtil {
         }
         return resultString;
     }
-    //发送post请求，并且参数是json
+    // 发送post请求，并且参数是json
     // Content-Type: application/json
     public static String doPost(String url, String json){
         CloseableHttpClient httpClient = HttpClients.createDefault();

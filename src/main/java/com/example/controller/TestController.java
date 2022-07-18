@@ -10,8 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 测试用的Controller
@@ -34,13 +33,15 @@ public class TestController extends BaseController{
     }
 
     @RequestMapping(value="/testJSP")
-    public String test(HttpServletRequest request) {
+    public String test() {
         return "test";
     }
 
     @RequestMapping(value="/testData")
-    public void testData(@RequestBody  User user) {
+    @ResponseBody
+    public String testData(@RequestBody  User user) {
         System.out.println("TestController的testData方法里面的user:"+user.toString());
+        return "成功接收到test.jsp页面的ajax请求！！！";
     }
 
     /**
