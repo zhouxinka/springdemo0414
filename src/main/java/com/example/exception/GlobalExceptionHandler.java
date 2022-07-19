@@ -25,19 +25,16 @@ public class GlobalExceptionHandler {
             return modelAndView;
 
     }
-    //处理未知异常
-    @ExceptionHandler
-    public ModelAndView handleUnknownException(Exception e){
-        log.error("异常："+e.getMessage());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("msg",e.getMessage());
-        modelAndView.setViewName("Exception");
-        return modelAndView;
-
-    }
-
     @ExceptionHandler(MyException.class)
-    public <T> Result<T> doMyException(MyException e) {
+    public <T> Result<T> handleMyException(MyException e) {
         return Result.error(e.getCode(), e.getMessage());
     }
+    //处理其他异常
+    @ExceptionHandler
+    public Result<Object> handleUnknownException(Exception e){
+        return Result.error("500", e.toString());
+
+    }
+
+
 }

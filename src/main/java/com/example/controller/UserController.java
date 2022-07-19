@@ -1,11 +1,11 @@
 package com.example.controller;
 
 import com.example.dataSource.DynamicDataSource;
+import com.example.entity.Result;
 import com.example.entity.User;
 import com.example.exception.MyException;
 import com.example.service.UserService;
 import com.example.utils.Global;
-import com.example.utils.HttpClientUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,11 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhoupeng
@@ -83,7 +83,7 @@ public class UserController extends BaseController {
      * 将前端参数”password“与形参”psd“进行绑定
      */
     @RequestMapping(value="/doLogin")
-    public String doLogin(String username,@RequestParam(value="password") String psd, HttpServletRequest request,RedirectAttributes redirectAttributes) {
+    public String doLogin(String username,@RequestParam(value="password",required=false) String psd, HttpServletRequest request,RedirectAttributes redirectAttributes) {
         System.out.println("UserController里面的doLogin方法的username:"+username);
         System.out.println("UserController里面的doLogin方法的psd:"+psd);
         User user = userServiceImpl.getUserByName(username);
@@ -185,36 +185,35 @@ public class UserController extends BaseController {
 
     /**
      * 接受httpClient发送的post请求
+     * @return
      */
     @PostMapping(value = "/testHttpClientWithPost",produces = "application/json;charset=utf-8")
     @ResponseBody
-    public String testHttpClientWithPost(HttpServletRequest request) throws IOException {
-        InputStreamReader inputStreamReader = null;
-        OutputStream outputStream = null;
-        BufferedReader bufferedReader = null;
-        StringBuilder sb = new StringBuilder();
-        try {
-            inputStreamReader = new InputStreamReader(request.getInputStream(),"UTF-8");
-            bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-
-            while((line = bufferedReader.readLine())!=null){
-                sb.append(line);
-            }
-            if(sb.length()>0){
-                System.out.println("接受到Post请求的参数是："+sb.toString());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                inputStreamReader.close();
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public Result<Map<String, Object>> testHttpClientWithPost(HttpServletRequest request) throws Exception {
+        //获取请求头信息
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while(headerNames.hasMoreElements()){
+            String header = headerNames.nextElement();
+            String value = request.getHeader(header);
+            System.out.println(header+":"+value);
         }
-        return "{\"message\":\"成功接受到post请求，参数是：\""+sb.toString()+"}";
+
+        // 获取请求内容信息
+        InputStreamReader inputStreamReader = new InputStreamReader(request.getInputStream(),"UTF-8");
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        String line;
+        StringBuilder sb = new StringBuilder();
+        while((line = bufferedReader.readLine())!=null){
+            sb.append(line);
+        }
+        if(sb.length()>0){
+            System.out.println("接受到Post请求的参数是："+sb.toString());
+        }
+        inputStreamReader.close();
+        bufferedReader.close();
+        Map<String, Object> data = new HashMap<>();
+        data.put("请求参数",sb.toString());
+        return Result.ok("200","success",data);
     }
     /**
      * 接受httpClient发送的post请求
@@ -244,14 +243,6 @@ public class UserController extends BaseController {
         //获取当前所在的数据库
         String currentDatasource= DynamicDataSource.getCurrentLookupKey();
         System.out.println("当前所在的数据库是："+currentDatasource);
-    }
-    @RequestMapping("/testPost")
-    public void testPost(){
-        //SimpleUrlHandlerMapping
-        String url = "http://localhost:8080/springdemo0414/a/testHttpClientWithPost";
-        String params = "{\"id\":\"2\",\"name\":\"麦卡唐尼\"}";
-        String result = HttpClientUtil.doPost(url, params);
-        System.out.println("测试使用HttpClient发送Post请求的返回值是："+result);
     }
 
     @Override

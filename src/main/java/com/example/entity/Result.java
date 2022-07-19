@@ -7,12 +7,22 @@ package com.example.entity;
 public class Result<T> {
     private String code;
     private String message;
+    private T data;
+    public static <T> Result<T> ok(String code, String msg, T data) {
+        Result<T> result = new Result();
+        result.setCode(code);
+        result.setMessage(msg);
+        result.setData(data);
+        return result;
+    }
+
+
+
     public static <T> Result<T> error(String code, String msg) {
         Result<T> result = new Result();
         result.setCode(code);
         result.setMessage(msg);
-        System.out.println(code);
-        System.out.println(msg);
+        result.setData((T) "");
         return result;
     }
 
@@ -30,5 +40,13 @@ public class Result<T> {
 
     public String getMessage() {
         return message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }
