@@ -21,7 +21,7 @@ public class Global {
         return getConfig("adminPath");
     }
 
-    private static String getConfig(String key) {
+    public static String getConfig(String key) {
         String value = map.get(key);
         if(value==null){
             value = properties.getProperty(key);

@@ -1,14 +1,23 @@
 package com.example.controller;
 
+import com.example.entity.Encrypt;
 import com.example.entity.Teacher;
 import com.example.service.TeacherService;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,28 +29,55 @@ import java.util.Map;
 @RequestMapping("${adminPath}")
 //@Scope("prototype")
 public class TeacherController extends BaseController {
+    static ObjectMapper mapper = new ObjectMapper();
+
+    static {
+        mapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
+            @Override
+            public void serialize(Object arg0, JsonGenerator arg1, SerializerProvider arg2)
+                    throws IOException, JsonProcessingException {
+                arg1.writeString("");
+            }
+        });
+    }
     @Autowired
     private TeacherService teacherServiceImpl;
 
     @RequestMapping(value="/teacherInfo")
     public String teacherInfo(Model model){
-        Map<String, Object> map = teacherServiceImpl.getTeacherById(1);
-        System.out.println(map.toString());
-        System.out.println(map.size());
-        System.out.println("===================================");
-        List<Map<String, Object>> teacherList = teacherServiceImpl.getTeacherByAge(30);
-        for (Map<String, Object> stringObjectMap : teacherList) {
-            System.out.println("stringObjectMap:"+stringObjectMap.toString());
-        }
-        System.out.println("teacherInfo...");
+        //Teacher teacher = teacherServiceImpl.getTeacherById(1);
+        //System.out.println(teacher.toString());
+        //System.out.println("===================================");
         List<Teacher> list = teacherServiceImpl.findAllTeacher();
-        for (Teacher Teacher : list) {
-            System.out.println(Teacher.toString());
+        for (Teacher teacher : list) {
+            System.out.println(teacher.toString());
         }
         model.addAttribute("list",list);
         return "teacherInfo";
     }
-
+    @RequestMapping(value="/getTeacherByPhone/{phone}")
+    @ResponseBody
+    public Teacher getTeacherByPhone(@PathVariable(value = "phone") String phone){
+        Teacher teacherByPhone = teacherServiceImpl.getTeacherByPhone(new Encrypt(phone));
+        return teacherByPhone;
+    }
+    @RequestMapping(value="/getTeacherByAge/{age}", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String getTeacherByAge(@PathVariable(value = "age") Integer age) throws JsonProcessingException {
+        List<Map<String, Object>> teacherList = teacherServiceImpl.getTeacherByAge(age);
+        return mapper.writeValueAsString(teacherList);
+    }
+    @RequestMapping(value="/addTeacher")
+    public String addTeacher(){
+        Teacher teacher = new Teacher();
+        teacher.setName("blincon");
+        teacher.setAge(45);
+        teacher.setGender("femal");
+        teacher.setPhone(new Encrypt("13916274799"));
+        teacherServiceImpl.addTeacher(teacher);
+        //重定向到a/userInfo请求
+        return "redirect:/a/teacherInfo";
+    }
     /**
      * @ModelAttribute修是的方法会先于@RequestMapping修饰的方法执行，并且拿到请求里面的参数
      * @param model

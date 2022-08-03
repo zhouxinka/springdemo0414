@@ -46,7 +46,6 @@ public class MyListener implements ServletContextListener {
             System.out.println("servletContext中的属性:"+s);
         }
         DataConsumeUtil.init();
-        System.out.println("监听器初始化方法执行了。。。");
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

@@ -6,9 +6,10 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="age" property="age" jdbcType="INTEGER"/>
         <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, name,age,gender
+        id, name, age, gender, phone
     </sql>
     <select id="findAllTeacher" resultMap="BaseResultMap">
         select
@@ -26,5 +27,44 @@
         select
         <include refid="Base_Column_List"></include>
         from teacher where age=#{age}
+    </select>
+
+    <insert id="addTeacher">
+        insert into teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="phone != null">
+                phone
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name!=''">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=INTEGER},
+            </if>
+            <if test="gender != null and gender!=''">
+                #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone!=''">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+
+        </trim>
+    </insert>
+    <select id="getTeacherByPhone" resultType="com.example.entity.Teacher">
+        select
+        <include refid="Base_Column_List"></include>
+        from teacher where phone=#{phone}
     </select>
 </mapper>

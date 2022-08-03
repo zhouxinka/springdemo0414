@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.dataSource.DynamicDataSource;
+import com.example.entity.Page;
 import com.example.entity.Result;
 import com.example.entity.User;
 import com.example.exception.MyException;
@@ -23,7 +24,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,18 +37,8 @@ public class UserController extends BaseController {
     //从而解决事务中的动态代理出错的问题
     @Autowired
     private UserService userServiceImpl;
-
-    @ModelAttribute
-    public User get(@RequestParam(required = false) String id,HttpServletRequest request){
-        System.out.println("UserController里面的ModelAttribute注解的方法里面的id:"+id);
-        User user = null;
-        if(StringUtils.isNotBlank(id)){
-            user = userServiceImpl.getUserById(Integer.parseInt(id));
-        }
-        if(user==null){
-            user = new User();
-        }
-        System.out.println("UserController里面的ModelAttribute注解的方法里面的user:"+user.toString());
+    @RequestMapping(value="/testApp",method = RequestMethod.GET)
+    public void test(HttpServletRequest request){
         //获取servletContext
         ServletContext servletContext = request.getSession().getServletContext();
         //将servletContext的所有属性打印出来
@@ -64,6 +54,18 @@ public class UserController extends BaseController {
         //子容器中获取UserController的bean
         UserController bean = webApplicationContext.getBean(UserController.class);
         System.out.println(bean.toString());
+    }
+    @ModelAttribute
+    public User get(@RequestParam(required = false) String id){
+        System.out.println("UserController里面的ModelAttribute注解的方法里面的id:"+id);
+        User user = null;
+        if(StringUtils.isNotBlank(id)){
+            user = userServiceImpl.getUserById(Integer.parseInt(id));
+        }
+        if(user==null){
+            user = new User();
+        }
+        System.out.println("UserController里面的ModelAttribute注解的方法里面的user:"+user.toString());
         return user;
     }
 
@@ -78,7 +80,7 @@ public class UserController extends BaseController {
 
     /**
      * 登录过程。登录成功则跳转到首页，否则跳转到登录页。
-     *@RequestParam(value="password")
+     * @RequestParam(value="password")
      * 这个注解是解决前端参数名字跟形参不一致问题
      * 将前端参数”password“与形参”psd“进行绑定
      */
@@ -112,11 +114,13 @@ public class UserController extends BaseController {
      * @param user
      * @return
      */
-    @RequestMapping(value="/findAllUser")
+    @RequestMapping(value="/findAllUser",produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public List<User> findAllUser(User user){
-        List<User> allUser = userServiceImpl.findAllUser(user);
-        return allUser;
+    public Page<User> findAllUser(User user, HttpServletRequest request, HttpServletResponse response, Model model){
+        System.out.println("###############UserController findAllUser###############");
+        Page<User> page = userServiceImpl.findPage(new Page<>(1, request, response), user);
+        System.out.println("page:"+page);
+        return page;
     }
     /**
      * 通过ID获取用户
@@ -178,6 +182,7 @@ public class UserController extends BaseController {
     @GetMapping(value = "/testHttpClientWithGet", produces = "application/json;charset=utf-8")
     @ResponseBody
     public String testHttpClientWithGet(HttpServletRequest request){
+        System.out.println("xxxxxxx");
         System.out.println("接受到get请求的参数是："+request.getParameter("name"));
         System.out.println("接受到get请求的参数是："+request.getParameter("age"));
         return "{\"message\":\"成功接受到get请求！！！\"}";
@@ -243,11 +248,6 @@ public class UserController extends BaseController {
         //获取当前所在的数据库
         String currentDatasource= DynamicDataSource.getCurrentLookupKey();
         System.out.println("当前所在的数据库是："+currentDatasource);
-    }
-
-    @Override
-    public String toString() {
-        return "UserController{}";
     }
 }
 

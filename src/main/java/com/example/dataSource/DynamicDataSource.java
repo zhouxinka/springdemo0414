@@ -9,7 +9,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
 
-    private static final ThreadLocal<String> threadLocal=new ThreadLocal<String>();
+    private static final ThreadLocal<String> threadLocal=new ThreadLocal<>();
 
     private static final String DATASOURCE_ONE = "dataSource1";
     private static final String DATASOURCE_TWO = "dataSource2";

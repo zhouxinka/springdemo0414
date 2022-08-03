@@ -10,7 +10,7 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!--spring容器监听器，项目启动时立即监听，加载spring容器-->
+    <!--spring容器监听器，项目启动时立即监听，加载spring父容器-->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>

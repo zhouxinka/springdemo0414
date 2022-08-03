@@ -9,6 +9,7 @@ public class Teacher extends DataEntity<Teacher>{
     private String name;
     private int age;
     private String gender;
+    private Encrypt phone;
 
     public Teacher() {
         super();
@@ -46,6 +47,14 @@ public class Teacher extends DataEntity<Teacher>{
         this.gender = gender;
     }
 
+    public Encrypt getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Encrypt phone) {
+        this.phone = phone;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
@@ -53,6 +62,7 @@ public class Teacher extends DataEntity<Teacher>{
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
+                ", phone=" + phone +
                 ", remarks='" + remarks + '\'' +
                 ", createBy=" + createBy +
                 ", createDate=" + createDate +

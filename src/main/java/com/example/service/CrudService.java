@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.dao.CrudDao;
 import com.example.entity.DataEntity;
+import com.example.entity.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,5 +54,16 @@ public abstract class CrudService<D extends CrudDao<T>,T extends DataEntity<T>> 
     public void delete(T entity) {
         dao.delete(entity);
     }
-
+    /**
+     * 查询分页数据
+     * @param page 分页对象
+     * @param entity
+     * @return
+     */
+    public Page<T> findPage(Page<T> page, T entity) {
+        entity.setPage(page);
+        page.setList(dao.findList(entity));
+        System.out.println("size:"+dao.findList(entity).size());
+        return page;
+    }
 }

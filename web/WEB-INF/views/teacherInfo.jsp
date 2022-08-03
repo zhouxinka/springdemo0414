@@ -39,6 +39,7 @@
                     <td>NAME</td>
                     <td>AGE</td>
                     <td>GENDER</td>
+                    <td>PHONE</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -48,10 +49,12 @@
                         <td>${teacher.name}</td>
                         <td>${teacher.age}</td>
                         <td>${teacher.gender}</td>
+                        <td>${teacher.phone}</td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
+            <a href="${ctx}/addTeacher" style="text-decoration:none">新增</a>
         </div>
     </div>
 

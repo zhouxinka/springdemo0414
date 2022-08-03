@@ -11,7 +11,7 @@ import java.util.Date;
  * @author zhoupeng
  * @create time 2021-04-16-9:47
  */
-public abstract class DataEntity<T> {
+public abstract class DataEntity<T> extends BaseEntity<T>{
     /**
      * 删除标记（0：正常；1：删除；2：审核；）
      */

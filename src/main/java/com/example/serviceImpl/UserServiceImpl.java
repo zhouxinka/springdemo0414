@@ -53,4 +53,5 @@ public class UserServiceImpl extends CrudService<UserDao,User> implements UserSe
     public void test(){
         System.out.println("UserServiceImpl.test()");
     }
+
 }

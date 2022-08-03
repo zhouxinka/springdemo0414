@@ -35,7 +35,7 @@
         <!--配置数据源属性，这里是动态数据源-->
         <property name="dataSource" ref="dynamicDataSource"/>
         <!--mapper.xml文件的路径 -->
-        <property name="mapperLocations" value="classpath:/mapper/userMapper.xml"/>
+        <property name="mapperLocations" value="classpath:/mapper/*.xml"/>
         <!--mybatis-config.xml文件的路径 -->
         <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
     </bean>
@@ -46,7 +46,7 @@
         <property name="targetDataSources">
             <map>
                 <entry key="dataSource1" value-ref="dataSource1"/>
-                <entry key="dataSource2" value-ref="dataSource2"/>
+                <!--<entry key="dataSource2" value-ref="dataSource2"/>-->
                 <!--<entry key="dataSource3" value-ref="dataSource3"/>-->
             </map>
         </property>
@@ -104,52 +104,52 @@
     </bean>
 
     <!-- 第二个数据源配置-->
-    <bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+    <!--<bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        &lt;!&ndash; 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass &ndash;&gt;
         <property name="driverClassName" value="${jdbc.driver2}" />
 
-        <!-- 基本属性 url、user、password -->
+        &lt;!&ndash; 基本属性 url、user、password &ndash;&gt;
         <property name="url" value="${jdbc.url2}" />
         <property name="username" value="${jdbc.username2}" />
         <property name="password" value="${jdbc.password2}" />
 
-        <!-- 数据库连接池初始化连接时第一次要创建连接的个数 -->
+        &lt;!&ndash; 数据库连接池初始化连接时第一次要创建连接的个数 &ndash;&gt;
         <property name="initialSize" value="${jdbc.pool.init}" />
 
-        <!-- 最小连接数  低于最小连接数连接池就会创建  默认为：0 接近maxIdle性能越好 -->
+        &lt;!&ndash; 最小连接数  低于最小连接数连接池就会创建  默认为：0 接近maxIdle性能越好 &ndash;&gt;
         <property name="minIdle" value="${jdbc.pool.minIdle}" />
 
-        <!-- 连接池中同时连接的最大连接（活动）数，表示单机并发可以支持n个  默认值为：8 -->
+        &lt;!&ndash; 连接池中同时连接的最大连接（活动）数，表示单机并发可以支持n个  默认值为：8 &ndash;&gt;
         <property name="maxActive" value="${jdbc.pool.maxActive}" />
 
-        <!-- 是否开启无用连接的回收机制 -->
+        &lt;!&ndash; 是否开启无用连接的回收机制 &ndash;&gt;
         <property name="removeAbandonedTimeout" value="${jdbc.pool.removeAbandonedTimeout}"/>
 
-        <!-- 连接池超出配置时间时，将回收没用的连接 建议配置时间短一些，快回收 -->
+        &lt;!&ndash; 连接池超出配置时间时，将回收没用的连接 建议配置时间短一些，快回收 &ndash;&gt;
         <property name="removeAbandoned" value="${jdbc.pool.removeAbandoned}"/>
 
-        <!-- 最大的等待时间 当连接池没有可用的连接，需要等待连接释放的最大时间，等待时间超过
-            就会抛出异常 默认为-1意为无限等待，配置maxWait避免线程池不够用而导致请求被无限挂起-->
+        &lt;!&ndash; 最大的等待时间 当连接池没有可用的连接，需要等待连接释放的最大时间，等待时间超过
+            就会抛出异常 默认为-1意为无限等待，配置maxWait避免线程池不够用而导致请求被无限挂起&ndash;&gt;
         <property name="maxWait" value="${jdbc.pool.maxWait}" />
 
-        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        &lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;
         <property name="timeBetweenEvictionRunsMillis" value="60000" />
 
-        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        &lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;
         <property name="minEvictableIdleTimeMillis" value="300000" />
-        <!-- sql 心跳 -->
+        &lt;!&ndash; sql 心跳 &ndash;&gt;
         <property name="validationQuery" value="${jdbc.testSql2}" />
         <property name="testWhileIdle" value="true" />
         <property name="testOnBorrow" value="false" />
         <property name="testOnReturn" value="false" />
 
-        <!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用）
+        &lt;!&ndash; 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用）
         <property name="poolPreparedStatements" value="true" />
-        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> -->
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> &ndash;&gt;
 
-        <!-- 配置监控统计拦截的filters -->
+        &lt;!&ndash; 配置监控统计拦截的filters &ndash;&gt;
         <property name="filters" value="stat" />
-    </bean>
+    </bean>-->
 
     <!-- 第三个数据源配置, 使用 BoneCP 数据库连接池 -->
     <!--<bean id="dataSource3" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">

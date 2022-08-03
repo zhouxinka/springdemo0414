@@ -46,23 +46,15 @@
 	<!--<typeAliases>
 		<typeAlias alias="Page" type="com.genecast.lims.common.persistence.Page" />&lt;!&ndash;分页  &ndash;&gt;
 	</typeAliases>-->
-    <!--<typeHandlers>
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.sys.entity.FlowIds" />
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.sys.entity.FlowIdsFragment" />
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.sys.entity.FlowExtractDatas" />
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.sys.entity.FlowFragmentDatas" />
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.sys.entity.FlowLibraryDatas" />
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.sys.entity.FlowCaptureDatas" />
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.sys.entity.FlowMixDatas" />
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.sys.entity.FlowSequenceDatas" />
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.sys.entity.FlowPathologyDatas" />
-		<typeHandler handler="com.genecast.lims.modules.sys.handler.JsonTypeHandler" javaType="com.genecast.lims.modules.qns.entity.SampleQcData" />
-	</typeHandlers>-->
+    <typeHandlers>
+		<typeHandler handler="com.example.utils.EncryptTypeHandler"/>
+	</typeHandlers>
 	
 	<!-- 插件配置 -->
-	<!--<plugins>
-		<plugin interceptor="com.genecast.lims.common.persistence.interceptor.PaginationInterceptor" />
-    </plugins>-->
+
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor" />
+	</plugins>
 	<environments default="development">
 		<environment id="development">
 			<!--表示使用哪种事务管理器，这里是JDBC事务管理器-->
@@ -78,8 +70,6 @@
 		</environment>
 
 	</environments>
-	<mappers>
-		<mapper resource="mapper/TeacherDao.xml"></mapper>
-	</mappers>
+
 	
 </configuration>

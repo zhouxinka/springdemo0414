@@ -1,6 +1,7 @@
 package com.example.utils;
 
 
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +13,7 @@ import java.util.Properties;
  * @create time 2021-05-11-10:58
  */
 public class PropertiesLoader {
-    //private static Logger logger = Logger.getLogger(PropertiesLoader.class);
+    private static Logger logger = Logger.getLogger(PropertiesLoader.class);
     private Properties properties;
 
     public PropertiesLoader(String... resource) {
@@ -27,7 +28,7 @@ public class PropertiesLoader {
                 inputStreamReader = new InputStreamReader(PropertiesLoader.class.getClassLoader().getResourceAsStream(location),"UTF-8");
                 properties.load(inputStreamReader);
             } catch (IOException e) {
-               // logger.error("Could not load properties from path:" + location + ", " + e.getMessage());
+                logger.error("Could not load properties from path:" + location + ", " + e.getMessage());
             }finally {
                 try {
                     inputStreamReader.close();

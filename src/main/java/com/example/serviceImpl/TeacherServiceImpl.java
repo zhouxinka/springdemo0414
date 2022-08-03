@@ -1,6 +1,7 @@
 package com.example.serviceImpl;
 
 import com.example.dao.TeacherDao;
+import com.example.entity.Encrypt;
 import com.example.entity.Teacher;
 import com.example.service.TeacherService;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class TeacherServiceImpl extends Exception implements TeacherService {
         return teacherDao.findAllTeacher();
     }
 
-    public Map<String, Object> getTeacherById(int id) {
+    public Teacher getTeacherById(int id) {
         System.out.println("TeacherServiceImpl.getTeacherById()...");
         return teacherDao.getTeacherById(id);
     }
@@ -31,5 +32,14 @@ public class TeacherServiceImpl extends Exception implements TeacherService {
     public List<Map<String, Object>> getTeacherByAge(int age) {
         System.out.println("TeacherServiceImpl.getTeacherByAge()...");
         return teacherDao.getTeacherByAge(age);
+    }
+    @Override
+    public void addTeacher(Teacher teacher) {
+        teacherDao.addTeacher(teacher);
+    }
+
+    @Override
+    public Teacher getTeacherByPhone(Encrypt phone) {
+        return teacherDao.getTeacherByPhone(phone);
     }
 }

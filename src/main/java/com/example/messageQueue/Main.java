@@ -1,8 +1,5 @@
 package com.example.messageQueue;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 测试类
  *
@@ -26,7 +23,5 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        Map<String,String> map=new HashMap<String,String>();
     }
 }
