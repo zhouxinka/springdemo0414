@@ -23,6 +23,11 @@
         <include refid="Base_Column"></include>
         from user where del_flag=#{DEL_FLAG_NORMAL}
     </select>
+    <select id="findAllUser_2" resultType="com.example.entity.User" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column"></include>
+        from user where del_flag=#{map.delFlag} order by id limit #{map.start},#{map.length}
+    </select>
     <select id="get" resultType="com.example.entity.User">
         select
         <include refid="All_Column"></include>

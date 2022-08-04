@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -33,25 +34,33 @@ public class UserServiceImpl extends CrudService<UserDao,User> implements UserSe
     }
 
     @Override
+    public User getUserByName(String name) {
+        return userDao.getUserByName(name);
+    }
+
+    @Override
     @Transactional
     public void deleteUser(User user) {
         delete(user);//调用的是父类CrudService的delete方法
     }
-    @Override
-    public List<User> findAllUser(User user) {
-        return findList(user);
-    }
+
     @Override
     public User getUserById(Integer id) {
         return super.get(id+"");//调用父类CrudService的get方法
 
     }
+
     @Override
-    public User getUserByName(String name) {
-        return userDao.getUserByName(name);
+    public List<User> findAllUser(User user) {
+        return findList(user);//调用的是父类CrudService的findList方法
     }
+
+    @Override
+    public List<User> findAllUser_2(Map<String,Integer> map) {
+        return userDao.findAllUser_2(map);
+    }
+
     public void test(){
         System.out.println("UserServiceImpl.test()");
     }
-
 }

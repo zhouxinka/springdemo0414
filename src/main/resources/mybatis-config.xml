@@ -46,14 +46,16 @@
 	<!--<typeAliases>
 		<typeAlias alias="Page" type="com.genecast.lims.common.persistence.Page" />&lt;!&ndash;分页  &ndash;&gt;
 	</typeAliases>-->
+
+	<!-- 自定义一个TypeHandler,将Teacher类中的phone属性成其他类型，达到数据脱敏的效果 -->
     <typeHandlers>
 		<typeHandler handler="com.example.utils.EncryptTypeHandler"/>
 	</typeHandlers>
-	
-	<!-- 插件配置 -->
 
+	<!-- 分页插件配置 -->
 	<plugins>
-		<plugin interceptor="com.github.pagehelper.PageInterceptor" />
+		<plugin interceptor="com.example.interceptors.PageInterceptor">
+		</plugin>
 	</plugins>
 	<environments default="development">
 		<environment id="development">

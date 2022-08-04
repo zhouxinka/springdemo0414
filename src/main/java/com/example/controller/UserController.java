@@ -7,6 +7,8 @@ import com.example.entity.User;
 import com.example.exception.MyException;
 import com.example.service.UserService;
 import com.example.utils.Global;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,6 +40,7 @@ public class UserController extends BaseController {
     //从而解决事务中的动态代理出错的问题
     @Autowired
     private UserService userServiceImpl;
+
     @RequestMapping(value="/testApp",method = RequestMethod.GET)
     public void test(HttpServletRequest request){
         //获取servletContext
@@ -109,6 +113,11 @@ public class UserController extends BaseController {
         return "userInfo";
     }
 
+    @RequestMapping(value="/userInfo_2")
+    public String userInfo_2(){
+        return "userInfo_2";
+    }
+
     /**
      * 前端发送ajax,获取所有用户，返回json数据
      * @param user
@@ -121,6 +130,26 @@ public class UserController extends BaseController {
         Page<User> page = userServiceImpl.findPage(new Page<>(1, request, response), user);
         System.out.println("page:"+page);
         return page;
+    }
+    @RequestMapping(value="/findAllUser_2",produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String findAllUser_2(User user, HttpServletRequest request, HttpServletResponse response, Model model) throws JsonProcessingException {
+        System.out.println("###############UserController findAllUser_2###############");
+        String draw = request.getParameter("draw");
+        String start = request.getParameter("start");
+        String length = request.getParameter("length");
+        System.out.println("draw:"+draw);
+        System.out.println("start:"+start);
+        System.out.println("length:"+length);
+        Map<String,Integer> map = new HashMap<>();
+        map.put("delFlag",0);
+        map.put("start",Integer.parseInt(start));
+        map.put("length",Integer.parseInt(length));
+        List<User> allUser = userServiceImpl.findAllUser_2(map);
+        String data = new ObjectMapper().writeValueAsString(allUser);
+        System.out.println("data:"+data);
+        String result = "{\"data\":" + data + ",\"length\":2,\"draw\":"+draw+",\"recordsTotal\":7,\"recordsFiltered\":7}";
+        return result;
     }
     /**
      * 通过ID获取用户
@@ -146,6 +175,16 @@ public class UserController extends BaseController {
         userServiceImpl.addUser(user,request);
         //重定向到a/userInfo请求
         return "redirect:/a/userInfo";
+    }
+    /**
+     * 删除用户
+     * @param
+     * @param
+     * @return
+     */
+    @RequestMapping(value="/deleteUser")
+    public void deleteUser(User user){
+        userServiceImpl.deleteUser(user);
     }
     /**
      * 获取用户详情，跳转到用户详情页面

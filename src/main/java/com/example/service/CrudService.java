@@ -54,6 +54,7 @@ public abstract class CrudService<D extends CrudDao<T>,T extends DataEntity<T>> 
     public void delete(T entity) {
         dao.delete(entity);
     }
+
     /**
      * 查询分页数据
      * @param page 分页对象
@@ -63,7 +64,6 @@ public abstract class CrudService<D extends CrudDao<T>,T extends DataEntity<T>> 
     public Page<T> findPage(Page<T> page, T entity) {
         entity.setPage(page);
         page.setList(dao.findList(entity));
-        System.out.println("size:"+dao.findList(entity).size());
         return page;
     }
 }

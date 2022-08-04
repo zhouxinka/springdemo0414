@@ -6,18 +6,28 @@
 <html>
 <head>
     <title>Index</title>
-    <%--<link href="http://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.mim.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/test.css"/>--%>
-    <link rel="stylesheet" href="../js/global/vendor/datatables.net-bs4/dataTables.bootstrap4.min599c.css?v4.0.2">
-    <link rel="stylesheet" href="../js/global/vendor/datatables.net-select-bs4/dataTables.select.bootstrap4.min599c.css?v4.0.2">
+    <!--引入bootstrap的css文件-->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+    <!--引入dataTables的css文件-->
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
+
+    <!--引入jquery的js文件-->
     <script src="../js/jquery_3.2.1.js"></script>
-    <script src="../js/global/vendor/datatables.net/jquery.dataTables599c.js?v4.0.2"></script>
-    <script src="../js/global/vendor/datatables.net-bs4/dataTables.bootstrap4599c.js?v4.0.2"></script>
-    <script src="../js/global/vendor/datatables.net-select-bs4/dataTables.select.js?v4.0.2"></script>
+
+    <!--引入bootstrap的js文件-->
+    <script src="../js/bootstrap.min.js"></script>
+
+    <!--引入dataTables的js文件-->
+    <script src="../js/jquery.dataTables.min.js"></script>
+
+    <!--引入sweet alert的js文件-->
+    <script src="../js/sweetalert.min.js"></script>
+
 </head>
 <script type="text/javascript">
+    var table = null;
     $(function() {
-        console.log(1001);
         var table_config = {
             "aLengthMenu":[2,5,10],
             "searching":false,//禁用搜索
@@ -34,7 +44,7 @@
             "aaSorting": [2, 'desc'], // 默认排序
             "ajax": {
                 "type": "post",
-                "url":"${ctx}/findAllUser"
+                "url":"${ctx}/findAllUser_2"
             },
             deferRender: true,
             "aoColumns" : [{
@@ -42,6 +52,11 @@
                 "orderable":false ,
                 "sDefaultContent" : "",
                 "render":function (data, type, row, meta) {
+                    console.log("data:"+data);//这一列的值即id
+                    console.log("type:"+type);//display
+                    console.log("row:"+row);//行数据
+                    console.log("meta:"+meta);
+
                     return '<a style="text-decoration:none" href="${ctx}/mmp/mMPJsonData/form?id='+row.id+'">'+row.id+'</a>';
                 }
             },{
@@ -63,9 +78,10 @@
                 "targets" : [4], // 指定的列
                 "data" : "",
                 "render" : function(data, type, full, meta) {
-                    var str="";
-                    str += '<a href="javascript:;" onclick="del(\''+full.id+'\')" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" data-original-title="删除"><i class="icon fa-times-rectangle" aria-hidden="true"></i>删除</a>';
-                    str += '<a href="${ctx}/mmp/mMPJsonData/download?id='+full.id+'" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" data-original-title="下载"><i class="icon fa-download" aria-hidden="true"></i>编辑</a>';
+                    var str = '';
+                    str += '<a href="javascript:;" onclick="deleteUser(\''+full.id+'\')" class="btn btn-sm btn-icon btn-pure btn-danger" data-toggle="tooltip" data-original-title="删除"><i class="icon fa-times-rectangle" aria-hidden="true"></i>删除</a>';
+                    str += '  ';
+                    str += '<a href="${ctx}/mmp/mMPJsonData/download?id='+full.id+'" class="btn btn-sm btn-icon btn-pure btn-info" data-toggle="tooltip" data-original-title="编辑"><i class="icon fa-download" aria-hidden="true"></i>编辑</a>';
                     return str;
                 }
             } ],
@@ -100,9 +116,34 @@
 
             }
         };
-        var dt = $('#listTab').DataTable(table_config);
+        table = $('#listTab').DataTable(table_config);
     })
-
+    function deleteUser(id) {
+        console.log(id);
+        swal({
+            title: "确定删除吗？",
+            text: "",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url:"${ctx}/deleteUser",
+                        type:"POST",
+                        data:{
+                            id:id
+                        },
+                        success: function () {
+                            table.ajax.reload();
+                        },
+                        error: function () {
+                        }
+                    })
+                }
+            });
+    }
 </script>
 <body>
 <p align="center">User Information</p>
